@@ -1,6 +1,7 @@
-{ pkgs, home-manager, ... }:
+{ mac-hostname, username }:
+{ pkgs, home-manager, ... }: {
+  networking.hostName = mac-hostname;
 
-{
   nixpkgs.overlays = [ (import ../nur-everything/overlays/mac-apps) ];
 
   # List packages installed in system profile. To search by name, run:
@@ -17,10 +18,10 @@
     unar
     whisky
     lunarfyi
-    sol
     python3Full
     libreoffice-bin
-    #standardnotes
+    imagemagick
+    nixfmt-rfc-style
   ];
 
   # Enable trackpad tap to click
@@ -35,9 +36,7 @@
 
   system.defaults.CustomUserPreferences = {
     # Enable Debug Menu
-    NSGlobalDomain = {
-      _NS_4445425547 = true;
-    };
+    NSGlobalDomain = { _NS_4445425547 = true; };
 
     # Disable .DS_Store Writing
     "com.apple.desktopservices" = {
@@ -52,16 +51,13 @@
       FXEnableExtensionChangeWarning = false; # Changing file extension warning
     };
     # Show battery percentage
-    "com.apple.controlcenter.plist" = {
-      BatteryShowPercentage = true;
-    };
+    "com.apple.controlcenter.plist" = { BatteryShowPercentage = true; };
   };
 
-
-  # Define user `haruka`
-  users.users.haruka = {
-    name = "haruka";
-    home = "/Users/haruka";
+  # Define user 
+  users.users.${username} = {
+    name = username;
+    home = "/Users/${username}";
   };
 
   # Configure zsh as an interactive shell.
@@ -70,21 +66,17 @@
   home-manager = {
     useGlobalPkgs = true;
     useUserPackages = true;
-    users.haruka = import (
-      ./home-manager.nix
-    );
+    users.${username} = (import ./home.nix { inherit username; });
   };
 
   # Enable flakes and optimise store during every build
-  nix.settings = {
-    experimental-features = "nix-command flakes";
-    auto-optimise-store = true;
-  };
+  nix.settings.experimental-features = "nix-command flakes";
+  nix.optimise.automatic = true;
 
   nixpkgs.hostPlatform = "aarch64-darwin";
   system.stateVersion = 5;
 
   # Auto upgrade nix package and the daemon service.
   services.nix-daemon.enable = true;
-  nix.package = pkgs.nix;  
+  nix.package = pkgs.nix;
 }
