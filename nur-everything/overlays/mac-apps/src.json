@@ -1,13 +1,13 @@
 {
     	"standardnotes-x64": {
-    		"version": "desktop@3.198.20",
-    		"url": "https://github.com/standardnotes/app/releases/download/%40standardnotes/desktop%403.198.20/standard-notes-3.198.20-mac-x64.dmg",
-    		"sha256": "0d4308058ea296bcbf5e59cb7e0dcb22f0acdd2fd6e2b811d61816c568acef22"
+    		"version": "desktop@3.200.3",
+    		"url": "https://github.com/standardnotes/app/releases/download/%40standardnotes/desktop%403.200.3/standard-notes-3.200.3-mac-x64.dmg",
+    		"sha256": "7fa661ce2fef06fcfd851d15cdcff269e48869366bf4cacd10853f624dbbdbbf"
     	},
     	"standardnotes-arm64": {
-    		"version": "desktop@3.198.20",
-    		"url": "https://github.com/standardnotes/app/releases/download/%40standardnotes/desktop%403.198.20/standard-notes-3.198.20-mac-arm64.dmg",
-    		"sha256": "b494d0f4607380154c7c5deb1a2e730b1c43237487c223276584f57c6cead1ea"
+    		"version": "desktop@3.200.3",
+    		"url": "https://github.com/standardnotes/app/releases/download/%40standardnotes/desktop%403.200.3/standard-notes-3.200.3-mac-arm64.dmg",
+    		"sha256": "1a5618cabbc450f682d51424eab87d53990c6fca6a3214cdd12b61fadfb161e5"
     	},
     	"whisky": {
     		"version": "v2.3.5",
@@ -15,14 +15,14 @@
     		"sha256": "62fce6aa7034cc84e4809a35cb46af37e7932368102450dd2b3d4a18cbc7b94e"
     	},
     	"librewolf-x64": {
-    		"version": "143.0-1",
-    		"url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/143.0-1/librewolf-143.0-1-macos-x86_64-package.dmg",
-    		"sha256": "6a6cb9f8155655e9933b36c3a3d222054435690542921680b3dbd5583706f4a4"
+    		"version": "143.0.1-1",
+    		"url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/143.0.1-1/librewolf-143.0.1-1-macos-x86_64-package.dmg",
+    		"sha256": "bf8e8b39c7c67c24022f56a1bbc089a1fd6aee80a5c78613dcc616e66e8cd82f"
     	},
     	"librewolf-arm64": {
-    		"version": "143.0-1",
-    		"url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/143.0-1/librewolf-143.0-1-macos-arm64-package.dmg",
-    		"sha256": "d3d887696754e70e6861bd476f043b4e56e0c6c641a18bc1e30f4ca26c057bcf"
+    		"version": "143.0.1-1",
+    		"url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/143.0.1-1/librewolf-143.0.1-1-macos-arm64-package.dmg",
+    		"sha256": "36583cce56b251ba6f6fce1ef387563ca510907c2e06fe159cc6f4e39f46ca9e"
     	},
     	"floorp": {
     		"version": "v12.2.0",
@@ -30,9 +30,9 @@
     		"sha256": "b4c118e0e34b402303423f7687c9c7f284ae900a47f696186ebc1384f0d9e063"
     	},
     	"lunarfyi": {
-    		"version": "v6.9.0",
-    		"url": "https://github.com/alin23/Lunar/releases/download/v6.9.0/Lunar-6.9.0.dmg",
-    		"sha256": "682dfa895ec0b6d5ce68ed30d3fa0bfacea6d9b29440ba85ed488ecf70ac88ec"
+    		"version": "v6.9.1",
+    		"url": "https://github.com/alin23/Lunar/releases/download/v6.9.1/Lunar-6.9.1.dmg",
+    		"sha256": "e357ad00811ffb180046041986844452bb55f7195f9e31d10a31e64bfb240bca"
     	},
     	"sol": {
     		"version": "2.1.257",
@@ -45,14 +45,14 @@
     		"sha256": "3340b104eeb1a26f938863dfe501043cabfdf0d2b0ec0ef96a6fbe78008e029b"
     	},
 			"ungoogled-chromium-x64": {
-    		"version": "140.0.7339.132-1.1",
-    		"url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/140.0.7339.132-1.1/ungoogled-chromium_140.0.7339.132-1.1_x86_64-macos.dmg",
-    		"sha256": "a50e716961077240361c0923dacee69dfa69edabb9c3c38620e4fc1806e7c6bc"
+    		"version": "140.0.7339.185-1.1",
+    		"url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/140.0.7339.185-1.1/ungoogled-chromium_140.0.7339.185-1.1_x86_64-macos.dmg",
+    		"sha256": "06f7a17d2deec3e2cbb08951d6b02aea0c4ead1dd85ed7aec72f07071031ff69"
     	},
 			"ungoogled-chromium-arm64": {
-    		"version": "140.0.7339.132-1.1",
-    		"url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/140.0.7339.132-1.1/ungoogled-chromium_140.0.7339.132-1.1_arm64-macos.dmg",
-    		"sha256": "9eec3e1cca4e2e96191c464c7f9039e2d0150a3a45d2f924e1f0526c894291e2"
+    		"version": "140.0.7339.185-1.1",
+    		"url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/140.0.7339.185-1.1/ungoogled-chromium_140.0.7339.185-1.1_arm64-macos.dmg",
+    		"sha256": "b75a02d55212f2ad1cfe2301146d7f140648a639f3ffbd83a10ccc4d6588fc19"
     	},
 			"bambu-studio": {
     		"version": "v02.02.02.56",
