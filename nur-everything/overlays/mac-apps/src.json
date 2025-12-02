@@ -1,13 +1,13 @@
 {
     	"standardnotes-x64": {
-    		"version": "desktop@3.201.2",
-    		"url": "https://github.com/standardnotes/app/releases/download/%40standardnotes/desktop%403.201.2/standard-notes-3.201.2-mac-x64.dmg",
-    		"sha256": "3b955e721c484c4848a6690f99c568a598b31e2804a7cfb35fd29013e067408c"
+    		"version": "desktop@3.201.3",
+    		"url": "https://github.com/standardnotes/app/releases/download/%40standardnotes/desktop%403.201.3/standard-notes-3.201.3-mac-x64.dmg",
+    		"sha256": "0c0020afb163d05e97495013388387add9b40d5f2b9758973b190f3d9b612620"
     	},
     	"standardnotes-arm64": {
-    		"version": "desktop@3.201.2",
-    		"url": "https://github.com/standardnotes/app/releases/download/%40standardnotes/desktop%403.201.2/standard-notes-3.201.2-mac-arm64.dmg",
-    		"sha256": "9f4da688daf5b3a943377ee5fce1d4eb5f2cb07d1b7d2dbf099356827bf2a1ef"
+    		"version": "desktop@3.201.3",
+    		"url": "https://github.com/standardnotes/app/releases/download/%40standardnotes/desktop%403.201.3/standard-notes-3.201.3-mac-arm64.dmg",
+    		"sha256": "a1a6284ac20e27084fb1c126589c028acfcb8287fb8a5a06fe7c97d26c6046e9"
     	},
     	"whisky": {
     		"version": "v2.3.5",
@@ -15,19 +15,19 @@
     		"sha256": "62fce6aa7034cc84e4809a35cb46af37e7932368102450dd2b3d4a18cbc7b94e"
     	},
     	"librewolf-x64": {
-    		"version": "144.0.2-1",
-    		"url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/144.0.2-1/librewolf-144.0.2-1-macos-x86_64-package.dmg",
-    		"sha256": "868dcffdae3d4f757522c1e761ac8a94e92470ac75502b0eee232d6db524bcc5"
+    		"version": "145.0.2-2",
+    		"url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/145.0.2-2/librewolf-145.0.2-2-macos-x86_64-package.dmg",
+    		"sha256": "a4b37b0cc6659712348f918b479226b969d8f36116de202c9586d1fc208b093e"
     	},
     	"librewolf-arm64": {
-    		"version": "144.0.2-1",
-    		"url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/144.0.2-1/librewolf-144.0.2-1-macos-arm64-package.dmg",
-    		"sha256": "a50c3de11ab10f93a6bb2a192051f743abf839627377e3d9ac60c53b66d2466f"
+    		"version": "145.0.2-2",
+    		"url": "https://gitlab.com/api/v4/projects/44042130/packages/generic/librewolf/145.0.2-2/librewolf-145.0.2-2-macos-arm64-package.dmg",
+    		"sha256": "4cd5bc76ac97ff2079dd399853eaf891b3cce4626aea9bf8fde8d69e87698d3d"
     	},
     	"floorp": {
-    		"version": "v12.6.0",
-    		"url": "https://github.com/Floorp-Projects/Floorp/releases/download/v12.6.0/floorp-macOS-universal.dmg",
-    		"sha256": "343788c76781f864a5e7bdad02f65bf79caf24918ade056215086addaae98135"
+    		"version": "v12.7.0",
+    		"url": "https://github.com/Floorp-Projects/Floorp/releases/download/v12.7.0/floorp-macOS-universal.dmg",
+    		"sha256": "fce34267d614417ff2d672214dbc8e3c9577fa9898eecbac5fb3c98bc72bda70"
     	},
     	"lunarfyi": {
     		"version": "v6.9.5",
@@ -40,24 +40,24 @@
     		"sha256": "7774a966744be9c565f98de0a010cd45c8fd507500d6065be7e93ed8463cc1b7"
     	},
     	"telegram-desktop": {
-    		"version": "v6.3.0",
-    		"url": "https://github.com/telegramdesktop/tdesktop/releases/download/v6.3.0/tsetup.6.3.0.dmg",
-    		"sha256": "1cc9229bdb9674cf35c989088f402ce5b7a1098cb945d84ab978c109c80c3ea3"
+    		"version": "v6.3.4",
+    		"url": "https://github.com/telegramdesktop/tdesktop/releases/download/v6.3.4/tsetup.6.3.4.dmg",
+    		"sha256": "916cd014cb3354276dd8b5199bde271eb5a85e869c9567c20aa3ecc70753149d"
     	},
 			"ungoogled-chromium-x64": {
-    		"version": "142.0.7444.162-1.1",
-    		"url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/142.0.7444.162-1.1/ungoogled-chromium_142.0.7444.162-1.1_x86_64-macos.dmg",
-    		"sha256": "659584f1e07c4c0455baf4923808c1595bfb83641dcf38c09ee5edc3a501c57c"
+    		"version": "142.0.7444.175-1.1",
+    		"url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/142.0.7444.175-1.1/ungoogled-chromium_142.0.7444.175-1.1_x86_64-macos.dmg",
+    		"sha256": "17125aa54532f7c908a97cb5a5cf391e0ac3744367bebd8c45ef5edbf9868f7d"
     	},
 			"ungoogled-chromium-arm64": {
-    		"version": "142.0.7444.162-1.1",
-    		"url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/142.0.7444.162-1.1/ungoogled-chromium_142.0.7444.162-1.1_arm64-macos.dmg",
-    		"sha256": "31bf9a1ddae4454dfa66351424bd0a8b58265173d010fcc1527db3272341247a"
+    		"version": "142.0.7444.175-1.1",
+    		"url": "https://github.com/ungoogled-software/ungoogled-chromium-macos/releases/download/142.0.7444.175-1.1/ungoogled-chromium_142.0.7444.175-1.1_arm64-macos.dmg",
+    		"sha256": "5eeddb31ffef23ff26efde7fde5ebea9677415a7dbc056a1882a95734d08e2df"
     	},
 			"bambu-studio": {
-    		"version": "v02.03.01.51",
-    		"url": "https://github.com/bambulab/BambuStudio/releases/download/v02.03.01.51/Bambu_Studio_mac-v02.03.01.51-20251029114602.dmg",
-    		"sha256": "dd92a263dcec8818edfbc3087a6ff1e96bee82384a3dbe09744237772953c968"
+    		"version": "v02.04.00.70",
+    		"url": "https://github.com/bambulab/BambuStudio/releases/download/v02.04.00.70/Bambu_Studio_mac-v02.04.00.70-20251118194119.dmg",
+    		"sha256": "00514330982d1fd96d143e4f8c6ecadb6bf80b39960e61369e1a2cd818159b6f"
     	}
 
     }
