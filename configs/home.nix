@@ -91,8 +91,8 @@
       settings = {
         init = { defaultBranch = "main"; };
         user = {
-          email = "106440141+harukafractus@users.noreply.github.com";
-          name = "harukafractus";
+          email = "106440141+fractuscontext@users.noreply.github.com";
+          name = "fractuscontext";
           signingkey = "~/.ssh/id_rsa.pub";
         };
         gpg = { format = "ssh"; };
