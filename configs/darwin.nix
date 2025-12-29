@@ -35,7 +35,9 @@
     echo "Muting Startup Chime"
     sudo nvram StartupMute=%01
 
-    # 3. Block OCSP (Hosts File Modification)
+    echo "Disabling extended quarantine attribute for downloaded"
+    sudo defaults write com.apple.LaunchServices 'LSQuarantine' -bool NO
+
     echo "Configuring Hosts file to block OCSP..."
     HOSTS_FILE="/etc/hosts"
 

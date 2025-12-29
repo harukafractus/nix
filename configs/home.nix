@@ -12,7 +12,7 @@
       
     sessionVariables = {
       PYTHONDONTWRITEBYTECODE = 1;
-      PYTHONSTARTUP = "$HOME/.pythonrc";
+      PYTHON_HISTORY = "/dev/null";
     };
 
     # --- Packages ---
@@ -31,41 +31,41 @@
       eza
       bat
       imagemagick
-      python312Packages.python
-      nix-search-cli
+      python315FreeThreading
+      uv
       htop
       wget
       unar
       ffmpeg
       asciinema
       asciinema-agg
-
+    ] ++ (if pkgs.stdenv.isLinux then [
+      # Linux pkgs
+      # USE FLATPAK ON LINUX!!!!!!
+    ] else [
       # GUI Apps
       librewolf
       vscodium
       audacity
       ungoogled-chromium
       qbittorrent
-    ] ++ (if pkgs.stdenv.isLinux then [
-      # Linux specific
-    ] else [
+      telegram-desktop
       # MacOS specific
       libreoffice-bin
       whisky
       lunarfyi
       iina
       utm
+      kap-bin
     ]);
 
     # --- Dotfiles Management ---
     file = {
       ".nanorc".text = ''
-        include ${pkgs.nano}/share/nano/*.nanorc
+        include ${pkgs.nanorc}/share/*.nanorc
       '';
 
-      ".pythonrc".text = ''
-        import readline
-        readline.write_history_file = lambda *args: None
+      ".bash_sessions_disable".text = ''
       '';
     };
   };
@@ -104,13 +104,11 @@
       enable = true;
       bashrcExtra = ''
         unset HISTFILE
-        SHELL_SESSION_HISTORY=0
       '';
     };
 
     zsh = {
       enable = true;
-      autocd = true;
       autosuggestion.enable = true;
       syntaxHighlighting.enable = true;
 
@@ -119,12 +117,23 @@
         zstyle ':completion:*' menu select
         zstyle ':completion:*' list-colors ''${(s.:.)LS_COLORS}
         
-        export LESSHISTFILE=-
-        setopt interactivecomments
-        setopt HIST_IGNORE_SPACE
+        HISTFILE="$HOME/.zsh_history"
+        HISTSIZE=50000                  # Lines in memory
+        SAVEHIST=10000                  # Lines in the file
 
-        # Ignore useless commands
-        HISTORY_IGNORE='(less *|ls|ls *|la|which *|reboot|exit|git *|echo *|cd|cd *|clear|codium *|open *)'
+        export LESSHISTFILE=-
+
+        setopt AUTO_CD                  # Type 'src' instead of 'cd src'
+        setopt AUTO_PUSHD               # cd automatically pushes old dir to stack
+        setopt PUSHD_IGNORE_DUPS        # Don't push duplicate directories to stack
+        setopt interactivecomments      # Allow comments starting with # in interactive shell
+        setopt HIST_IGNORE_SPACE        # Don't save commands starting with a space
+        setopt HIST_IGNORE_ALL_DUPS     # Remove older duplicate entries from history
+        setopt INC_APPEND_HISTORY       # Write to history file immediately, not when shell exits
+        setopt HIST_VERIFY              # Don't execute immediate upon history expansion (allows editing) 
+        setopt EXTENDED_GLOB            # Enable extended globbing
+
+        HISTORY_IGNORE='(less *|ls *|ll|la|which *|git *|echo *|cd|cd *|clear|codium *|open *|cat *|eza *|exit|history)'
 
         # --- Powerlevel10k ---
         if [[ $TERM = "xterm-256color" ]]; then
@@ -133,7 +142,7 @@
         fi
 
         # --- Custom Functions ---
-        nix-shell-flake() { 
+        ns() { 
           pkgs=() 
           for x in "$@"; do pkgs+=("nixpkgs#$x"); done
           nix shell "''${pkgs[@]}" 
