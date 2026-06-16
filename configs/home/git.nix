@@ -9,6 +9,7 @@ in
 {
   programs.git = {
     enable = true;
+    lfs.enable = true;
     ignores = [
       "*.DS_Store"
       "*__pycache__/"

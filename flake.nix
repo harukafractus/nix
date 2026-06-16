@@ -1,8 +1,8 @@
 {
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable/";
-    nixpkgs-stable-linux.url = "github:NixOS/nixpkgs/release-25.11";
-    nixpkgs-stable-darwin.url = "github:NixOS/nixpkgs/nixpkgs-25.11-darwin";
+    nixpkgs-stable-linux.url = "github:NixOS/nixpkgs/release-26.05";
+    nixpkgs-stable-darwin.url = "github:NixOS/nixpkgs/nixpkgs-26.05-darwin";
 
     home-manager = {
       url = "github:nix-community/home-manager/master";

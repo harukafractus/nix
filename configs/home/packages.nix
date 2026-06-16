@@ -13,9 +13,6 @@ let
 
   fonts = with pkgs; [
     # Normal CLI apps & Fonts (Unstable)
-    noto-fonts
-    source-han-sans
-    source-han-mono
     source-han-serif
     source-han-code-jp
     meslo-lgs-nf
@@ -26,17 +23,14 @@ let
     cowsay
     eza
     bat
-    python315FreeThreading
     uv
     htop
-    wget
     unar
     asciinema
     asciinema-agg
     nixd
     nixfmt
-    ansible
-    ansible-lint
+    git-filter-repo
   ];
 
   stablePackages = with pkgs-stable; [
@@ -44,23 +38,21 @@ let
     ffmpeg
     imagemagick
     podman
-    podman-compose
   ];
 
   darwinGuiStable = with pkgs-stable; [
     # Heavy GUI apps (Stable)
     audacity
-    libreoffice-bin
-    vscodium
     remmina
     wireshark
-    iina
-    utm
   ];
 
   darwinGuiUnstable = with pkgs; [
     # GUI apps that need unstable for binary cache
     qbittorrent
+    utm
+    iina
+    libreoffice-bin
   ];
 
   darwinGuiHaruka = with pkgs-haruka-darwin; [

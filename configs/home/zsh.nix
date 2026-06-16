@@ -8,6 +8,85 @@
 let
   inherit (pkgs.stdenv) isDarwin isLinux;
   homeDirectory = config.home.homeDirectory;
+
+  myWebDavServerFunction = ''
+    function webdav() {
+      local PORT="''${1:-8081}"
+      local TMP_DIR="/tmp/webdav_burner"
+      local CERT="$TMP_DIR/webdav.crt"
+      local KEY="$TMP_DIR/webdav.key"
+      local MY_USERNAME="claire"
+      local MY_PASSWORD=$(${pkgs.openssl}/bin/openssl rand -base64 30 | tr -dc '0-9' | head -c 6)
+
+      echo "Firing up Dufs (Web UI + WebDAV) in: $PWD"
+      mkdir -p "$TMP_DIR"
+
+      if [[ ! -f "$CERT" ]]; then
+          echo "Generating new burner SSL certs..."
+          ${pkgs.openssl}/bin/openssl req -x509 -newkey rsa:2048 -keyout "$KEY" -out "$CERT" \
+              -days 7 -nodes -subj "/CN=localhost" 2>/dev/null
+      else
+          echo "Reusing existing burner certs from $TMP_DIR..."
+      fi
+
+    ${
+      if isDarwin then
+        ''
+          local IP=$(route get default | grep interface | awk '{print $2}' | xargs ipconfig getifaddr)
+        ''
+      else
+        ''
+          local IP=$(hostname -I | awk '{print $1}')
+        ''
+    }
+
+    if [[ -z "$IP" ]]; then
+      echo "Error, Could not detect local IP. Are you connected to a network?"
+      return 1
+    fi
+
+    echo ""
+    echo "✅ Dufs Burner Server is live!"
+    echo "🌐 Browser & WebDAV URL: https://$IP:$PORT"
+    echo "👤 User:  $MY_USERNAME"
+    echo "🔑 Pass:  $MY_PASSWORD"
+    echo "🛑 Press Ctrl+C to stop."
+    echo ""
+
+    # Dufs serves both the Web GUI and WebDAV automatically
+    # The :rw at the end of the auth string grants Read/Write/Delete permissions
+    ${pkgs.dufs}/bin/dufs . \
+      --bind "0.0.0.0" \
+      --port "$PORT" \
+      --tls-cert "$CERT" \
+      --tls-key "$KEY" \
+      --auth "$MY_USERNAME:$MY_PASSWORD@/:rw" \
+      -A
+    }
+  '';
+
+  myNixShellFunction = ''
+    ns() { 
+      local pkg_args=() 
+      for x in "$@"; do pkg_args+=("nixpkgs#$x"); done
+      nix --extra-experimental-features 'nix-command flakes' shell "''${pkg_args[@]}" 
+    }
+  '';
+
+  myHistoryDelFunction = ''
+    hdel() {
+      if [[ $# -eq 0 ]]; then
+        echo "Usage: hdel <cmd1> <cmd2> ..."
+        return 1
+      fi
+      fc -W
+      local search_terms="''${(j:|:)@}"
+      local pattern="^(: [0-9]+:[0-9]+;)?($search_terms)"
+      sed -i.tmp -E "/$pattern/d" "$HISTFILE" && /bin/rm "''${HISTFILE}.tmp"
+      fc -R
+      echo "Nuked history entries starting with: ''${(j:, :)@}"
+    }
+  '';
 in
 {
   programs.zsh = {
@@ -36,7 +115,6 @@ in
       setopt HIST_VERIFY
       setopt EXTENDED_GLOB
 
-      # --- Smart History Filtering ---
       zshaddhistory() {
         local line="''${1%%$'\n'}"
         local cmd="''${''${(z)line}[1]}"
@@ -45,6 +123,7 @@ in
           return 0
         fi
 
+        # DO NOT ADD READ-ONLY COMMANDS
         case "$line" in
           ls|ls\ *|ll|la|exa\ *|eza\ *|tree\ *)               return 1 ;;
           cd|cd\ *|pwd|popd|popd\ *|pushd|pushd\ *|dirs)      return 1 ;;
@@ -55,33 +134,22 @@ in
           echo\ *|cat\ *|less\ *|bat\ *)                      return 1 ;;
           source\ .venv*|source\ venv*|conda\ activate\ *)    return 1 ;;
           git\ status|git\ status\ *|git\ add\ *|git\ diff\ *) return 1 ;;
-          git\ log\ *|git\ show\ *|git\ branch\ *)            return 1 ;;
-          git\ switch\ *|git\ checkout\ *|git\ fetch\ *|git\ pull\ *) return 1 ;;
-          git\ push\ *|git\ stash\ *|git\ restore\ *)         return 1 ;;
+          git\ log\ *|git\ show\ *)            return 1 ;;
         esac
 
         whence "$cmd" > /dev/null || return 1
         return 0
       }
 
-      # --- Powerlevel10k ---
-      if [[ $TERM = "xterm-256color" ]]; then
-          source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
-          [[ -f ${homeDirectory}/.p10k.zsh ]] && source ${homeDirectory}/.p10k.zsh
-      fi
+      ${lib.optionalString isDarwin ''
+        fix-quarantine() { sudo xattr -rd com.apple.quarantine "$@"; }
+        rm() { echo "macOS: Use trash (or /bin/rm if you must)."; return 1; }
+      ''}
 
-      # --- Custom Functions ---
-      ns() { 
-        local pkg_args=() 
-        for x in "$@"; do pkg_args+=("nixpkgs#$x"); done
-        nix shell "''${pkg_args[@]}" 
-      }
+      ${lib.optionalString isLinux ''
+        alias rm='rm -I'
+      ''}
 
-      fix-quarantine() {
-        sudo xattr -rd com.apple.quarantine "$@"
-      }
-
-      # --- Prettier ls ---
       ls() {
         if [[ $# -eq 0 ]]; then
           ${pkgs.eza}/bin/eza \
@@ -98,32 +166,14 @@ in
         fi
       }
 
-      ${lib.optionalString isDarwin ''
-        fix-quarantine() { sudo xattr -rd com.apple.quarantine "$@"; }
-        rm() { echo "macOS: Use trash (or /bin/rm if you must)."; return 1; }
-      ''}
+      ${myWebDavServerFunction}
+      ${myNixShellFunction}
+      ${myHistoryDelFunction}
 
-      ${lib.optionalString isLinux ''
-        alias rm='rm -I'
-      ''}
-
-      # Function to nuke history entries starting with any of the provided arguments
-      history_nuke() {
-          if [[ $# -eq 0 ]]; then
-              echo "Usage: hdel <cmd1> <cmd2> ..."
-              return 1
-          fi
-          fc -W
-          local search_terms="''${(j:|:)@}"
-          local pattern="^(: [0-9]+:[0-9]+;)?($search_terms)"
-          if [[ "$OSTYPE" == "darwin"* ]]; then
-              sed -i ''' -E "/$pattern/d" "$HISTFILE"
-          else
-              sed -i -E "/$pattern/d" "$HISTFILE"
-          fi
-          fc -R
-          echo "Nuked history entries starting with: ''${(j:, :)@}"
-      }
+      if [[ $TERM = "xterm-256color" ]]; then
+          source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
+          [[ -f ${homeDirectory}/.p10k.zsh ]] && source ${homeDirectory}/.p10k.zsh
+      fi
 
       # --- Welcome Banner ---
       ${pkgs.fortune-kind}/bin/fortune-kind | ${pkgs.cowsay}/bin/cowsay -f koala
@@ -135,8 +185,9 @@ in
       mkdir = "mkdir -p";
       mv = "mv -i";
       cp = "cp -i";
-      gc = "sudo nix-collect-garbage -d";
       fix-ssh-perms = "find ${homeDirectory}/.ssh -type f -exec chmod 600 {} +";
+      gc-nix = "sudo nix-collect-garbage -d";
+      gc-git = "git reflog expire --expire=now --all && git gc --aggressive --prune=now";
     }
     // lib.optionalAttrs isDarwin {
       # macOS Only Aliases
