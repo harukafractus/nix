@@ -73,20 +73,40 @@ let
     }
   '';
 
-  myHistoryDelFunction = ''
-    hdel() {
-      if [[ $# -eq 0 ]]; then
-        echo "Usage: hdel <cmd1> <cmd2> ..."
-        return 1
+  customAddHistory = ''
+    zshaddhistory() {
+      local line="''${1%%$'\n'}"
+      local words=(''${(z)line})
+      local cmd
+      
+      # Find the actual command by skipping over ENV=var assignments
+      for cmd in $words; do
+        [[ "$cmd" == *=* ]] || break
+      done
+
+      if [[ "$line" == *['|<>']* ]]; then
+        return 0
       fi
-      fc -W
-      local search_terms="''${(j:|:)@}"
-      local pattern="^(: [0-9]+:[0-9]+;)?($search_terms)"
-      sed -i.tmp -E "/$pattern/d" "$HISTFILE" && /bin/rm "''${HISTFILE}.tmp"
-      fc -R
-      echo "Nuked history entries starting with: ''${(j:, :)@}"
+
+      # DO NOT ADD READ-ONLY COMMANDS
+      case "$line" in
+        ls|ls\ *|ll|la|exa\ *|eza\ *|tree\ *)               return 1 ;;
+        cd|cd\ *|pwd|popd|popd\ *|pushd|pushd\ *|dirs)      return 1 ;;
+        clear|exit|history|date|jobs|fg|bg)                 return 1 ;;
+        htop|htop\ *)                                       return 1 ;;
+        man\ *|which\ *|file\ *|open\ *|codium\ *)          return 1 ;;
+        ping\ *|dig\ *|nslookup\ *)                         return 1 ;;
+        echo\ *|cat\ *|less\ *|bat\ *)                      return 1 ;;
+        source\ .venv*|source\ venv*|conda\ activate\ *)    return 1 ;;
+        git\ status|git\ status\ *|git\ add\ *|git\ diff\ *) return 1 ;;
+        git\ log\ *|git\ show\ *)                            return 1 ;;
+      esac
+
+      whence "$cmd" > /dev/null || return 1
+      return 0
     }
   '';
+
 in
 {
   programs.zsh = {
@@ -115,32 +135,6 @@ in
       setopt HIST_VERIFY
       setopt EXTENDED_GLOB
 
-      zshaddhistory() {
-        local line="''${1%%$'\n'}"
-        local cmd="''${''${(z)line}[1]}"
-
-        if [[ "$line" == *['|<>']* ]]; then
-          return 0
-        fi
-
-        # DO NOT ADD READ-ONLY COMMANDS
-        case "$line" in
-          ls|ls\ *|ll|la|exa\ *|eza\ *|tree\ *)               return 1 ;;
-          cd|cd\ *|pwd|popd|popd\ *|pushd|pushd\ *|dirs)      return 1 ;;
-          clear|exit|history|date|jobs|fg|bg)                 return 1 ;;
-          htop|htop\ *)                                       return 1 ;;
-          man\ *|which\ *|file\ *|open\ *|codium\ *)          return 1 ;;
-          ping\ *|dig\ *|nslookup\ *)                         return 1 ;;
-          echo\ *|cat\ *|less\ *|bat\ *)                      return 1 ;;
-          source\ .venv*|source\ venv*|conda\ activate\ *)    return 1 ;;
-          git\ status|git\ status\ *|git\ add\ *|git\ diff\ *) return 1 ;;
-          git\ log\ *|git\ show\ *)            return 1 ;;
-        esac
-
-        whence "$cmd" > /dev/null || return 1
-        return 0
-      }
-
       ${lib.optionalString isDarwin ''
         fix-quarantine() { sudo xattr -rd com.apple.quarantine "$@"; }
         rm() { echo "macOS: Use trash (or /bin/rm if you must)."; return 1; }
@@ -166,9 +160,9 @@ in
         fi
       }
 
+      ${customAddHistory}
       ${myWebDavServerFunction}
       ${myNixShellFunction}
-      ${myHistoryDelFunction}
 
       if [[ $TERM = "xterm-256color" ]]; then
           source ${pkgs.zsh-powerlevel10k}/share/zsh-powerlevel10k/powerlevel10k.zsh-theme
@@ -186,7 +180,7 @@ in
       mv = "mv -i";
       cp = "cp -i";
       fix-ssh-perms = "find ${homeDirectory}/.ssh -type f -exec chmod 600 {} +";
-      gc-nix = "sudo nix-collect-garbage -d";
+      gc-nix = "sudo nix store gc -v && sudo nix store optimise -v";
       gc-git = "git reflog expire --expire=now --all && git gc --aggressive --prune=now";
     }
     // lib.optionalAttrs isDarwin {

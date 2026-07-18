@@ -25,12 +25,13 @@ let
     bat
     uv
     htop
-    unar
     asciinema
     asciinema-agg
     nixd
     nixfmt
     git-filter-repo
+    ansible
+    ansible-lint
   ];
 
   stablePackages = with pkgs-stable; [
@@ -38,11 +39,11 @@ let
     ffmpeg
     imagemagick
     podman
+    unar
   ];
 
   darwinGuiStable = with pkgs-stable; [
     # Heavy GUI apps (Stable)
-    audacity
     remmina
     wireshark
   ];
@@ -61,7 +62,6 @@ let
     ungoogled-chromium
     telegram-desktop
     lunarfyi
-    kap-bin
   ];
 
 in

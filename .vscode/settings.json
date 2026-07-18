@@ -22,5 +22,6 @@
     },
     "files.associations": {
         "ansible/**/*.yml": "ansible"
-    }
+    },
+    "python-envs.defaultEnvManager": "ms-python.python:system"
 }
